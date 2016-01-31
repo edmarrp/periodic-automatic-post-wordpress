@@ -7,49 +7,48 @@
 # $DBName = 'database-name'
 ##
 
+$WP_Table = 'wp_posts';
+
 ## Define the interval period between First Date and Last Date
 
-$Interval_Period = 
+$Interval_Period = '15';
+$Metric = 'day';
+
 $Last_Date = Datetime ();  
-$First_Data = sub($Last_Date, interval '
-
-
+$First_Data = Date_sub($Last_Date, interval '$Interval_Period' $Metric);
 
 
 $sql = "SELECT id, post_title, post_date\n"
-    . "FROM wp_unp_posts\n"
+    . "FROM $WP_Table\n"
     . "WHERE post_date\n"
-    . "BETWEEN \'2016-01-01\'\n"
-    . "AND \'2016-01-25\'\n"
+    . "BETWEEN \'$First_Date\'\n"
+    . "AND \'$Last_Date\'\n"
     . "and post_title <> \' \'\n"
     . "AND post_status = \'publish\'\n"
     . "LIMIT 0 , 30";
 
 
-$result = $conn->query($sql);
+
+function create_post(){
+ // Generate the new $new_post
+  $new_post = array();
+  $new_post['post_title'] = 'The Periodic Auto Post';
+  $new_post['post_content'] = $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
-        echo "id: " . $row["id"]. " - Name: " . $row["campo1"]. " " . $row["campo2"]. "<br>";
+        echo "id: " . $row["id"]. " - Post_Title: " . $row["post_title"]. " " . $row["post_date"]. "<br>";
     }
 } else {
     echo "0 results";
 }
 $conn->close();
-
-
-
-function create_post(){
- // Cria o objeto $post
-  $my_post = array();
-  $my_post['post_title'] = 'My post';
-  $my_post['post_content'] = 'aqui os resultados da consulta.';
-  $my_post['post_status'] = 'publish' (ou 'draft');
-  $my_post['post_author'] = 1;
-  $my_post['post_category'] = array(1);
+  $new_post['post_status'] = 'publish' (ou 'draft');
+  $new_post['post_author'] = 1;
+  $new_post['post_category'] = array(1);
  
-// Insere o Post no Banco de Dados
+// Insert the New Post to Database
   wp_insert_post( $my_post );
      
 }

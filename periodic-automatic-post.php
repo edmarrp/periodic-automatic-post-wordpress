@@ -49,7 +49,7 @@ $conn->close();
   $new_post['post_category'] = array(1);
  
 // Insert the New Post to Database
-  wp_insert_post( $my_post );
+  wp_insert_post( $new_post );
      
 }
 
